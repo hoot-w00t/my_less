@@ -27,6 +27,7 @@
 struct lessfile_s {
     char **content;
     char *filepath;
+    char *filename;
     unsigned int line;
     unsigned int line_c;
     unsigned int column;

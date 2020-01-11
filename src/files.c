@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <string.h>
+#include <libgen.h>
 
 char *read_file(char *filepath)
 {
@@ -129,12 +130,26 @@ lessfile_t *load_file(char *filepath)
         return (NULL);
     }
 
+    char *_path = strdup(filepath);
+    lf->filename = strdup(basename(_path));
+    if (_path == NULL || lf->filename == NULL) {
+        fprintf(stderr, "%s: Cannot allocate memory (filename)\n", filepath);
+        if (_path != NULL)
+            free(_path);
+        if (lf->filename != NULL)
+            free(lf->filename);
+        free(content);
+        free(lf);
+        return (NULL);
+    }
+
     lf->filepath = filepath;
     lf->line = 0;
     lf->column = 0;
     lf->column_max = 0;
     split_lines(content, lf);
     free(content);
+    free(_path);
 
     return (lf);
 }
@@ -143,6 +158,7 @@ void unload_file(lessfile_t *lf)
 {
     for (unsigned int i = 0; i < lf->line_c; ++i)
         free(lf->content[i]);
+    free(lf->filename);
     free(lf->content);
     free(lf);
 }
