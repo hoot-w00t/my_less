@@ -39,7 +39,7 @@ void display_lines(lessfile_t *lf)
     unsigned int height = 0, width = 0, cur_line = lf->line;
 
     getmaxyx(stdscr, height, width);
-    clear();
+    erase();
     for (unsigned int y = 0; y < height - 1; ++y, cur_line = lf->line + y) {
         if (cur_line < lf->line_c) {
             unsigned int line_len = strlen(lf->content[cur_line]);
