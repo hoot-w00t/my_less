@@ -49,4 +49,12 @@ void display_file(lessfile_t *lf);
 
 // end of interface.c
 
+// main.c
+
+void display_usage(void);
+void display_version(void);
+void display_help(void);
+
+// end of main.c
+
 #endif

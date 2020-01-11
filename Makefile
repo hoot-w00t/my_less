@@ -16,13 +16,17 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
+GIT_VERSION	=	$(shell git describe --always --tags)
+
 CC	=	cc
 LIBS	=	-lncurses
 INCLUDE	=	-I./include
 CFLAGS	=	-Wall -Wextra -pipe	\
-			$(INCLUDE) $(LIBS)
+			$(INCLUDE) $(LIBS)	\
+			-DGIT_VERSION=\"$(GIT_VERSION)\"
 
 SRC	=	src/main.c		\
+		src/version.c	\
 		src/files.c		\
 		src/interface.c
 

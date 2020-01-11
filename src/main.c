@@ -18,7 +18,7 @@
 */
 
 #include "my_less.h"
-#include <stdlib.h>
+#include "version.h"
 #include <stddef.h>
 #include <string.h>
 #include <stdio.h>
@@ -34,7 +34,6 @@ void display_help(void)
     printf("\nDescription:\n\
     file        file to open\n\
     --help      show this help\n");
-    exit(0);
 }
 
 int main(int ac, char **av)
@@ -44,15 +43,21 @@ int main(int ac, char **av)
     for (int i = 1; i < ac; ++i) {
         if (!strcmp(av[i], "--help")) {
             display_help();
-        } else if (lf == NULL) {
+            return (0);
+        } else if (!strcmp(av[i], "--version")) {
+            display_version();
+            return (0);
+        } else {
             lf = load_file(av[i]);
+            if (lf != NULL) {
+                display_file(lf);
+                unload_file(lf);
+            }
         }
     }
     if (lf == NULL) {
         display_usage();
-    } else {
-        display_file(lf);
-        unload_file(lf);
+        return (1);
     }
     return (0);
 }
