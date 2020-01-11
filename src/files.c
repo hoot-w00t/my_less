@@ -32,13 +32,13 @@ char *read_file(char *filepath)
     FILE *_file = NULL;
     char *file_content = NULL;
 
-    if (lstat(filepath, &_fileinfo) == -1) {
+    _file = fopen(filepath, "r");
+    if (_file == NULL) {
         fprintf(stderr, "%s: %s\n", filepath, strerror(errno));
         return (NULL);
     }
 
-    _file = fopen(filepath, "r");
-    if (_file == NULL) {
+    if (lstat(filepath, &_fileinfo) == -1) {
         fprintf(stderr, "%s: %s\n", filepath, strerror(errno));
         return (NULL);
     }
@@ -64,6 +64,49 @@ char *read_file(char *filepath)
     return (file_content);
 }
 
+char *get_next_line(char *str, char **endptr)
+{
+    unsigned int size = 0;
+    for (; !eol(str[size]); ++size);
+
+    char *line = malloc(sizeof(char) * (size + 1));
+    if (line == NULL)
+        return (NULL);
+
+    strncpy(line, str, size);
+    line[size] = '\0';
+    if (str[size] == '\n') {
+        *endptr = &str[size + 1];
+    } else {
+        *endptr = &str[size];
+    }
+    return (line);
+}
+
+int split_lines(char *str, lessfile_t *lf)
+{
+    unsigned int lines = 1;
+
+    for (unsigned int i = 0; str[i] != '\0'; ++i)
+        if (str[i] == '\n')
+            ++lines;
+    lf->line_c = lines;
+
+    char **splitted = malloc(sizeof(char *) * lines);
+    if (splitted == NULL)
+        return (0);
+
+    char *endptr = str;
+    for (unsigned int i = 0; i < lines; ++i) {
+        splitted[i] = get_next_line(endptr, &endptr);
+        if (splitted[i] == NULL)
+            lines = i + 1;
+    }
+
+    lf->content = splitted;
+    return (1);
+}
+
 lessfile_t *load_file(char *filepath)
 {
     char *content = read_file(filepath);
@@ -77,19 +120,18 @@ lessfile_t *load_file(char *filepath)
         return (NULL);
     }
 
+    split_lines(content, lf);
+    free(content);
+    lf->filepath = filepath;
     lf->line = 0;
-    lf->total_lines = 1;
-    lf->content = content;
-    for (unsigned int i = 0; content[i] != '\0'; ++i) {
-        if (content[i] == '\n')
-            lf->total_lines += 1;
-    }
 
     return (lf);
 }
 
 void unload_file(lessfile_t *lf)
 {
+    for (unsigned int i = 0; i < lf->line_c; ++i)
+        free(lf->content[i]);
     free(lf->content);
     free(lf);
 }

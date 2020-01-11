@@ -17,44 +17,53 @@
 
 */
 
-#ifndef MY_LESS_H
-#define MY_LESS_H
-
+#ifndef BUFFER_SIZE
 #define BUFFER_SIZE 32
-#define KEY_PGUP    339
-#define KEY_PGDOWN  338
-#define eol(c) ((c) == '\n' || (c) == '\0')
+#endif
 
-// files.c
+#ifndef ML_FILES_H
+#define ML_FILES_H 1
 
 struct lessfile_s {
-    char *content;
+    char **content;
+    char *filepath;
     unsigned int line;
-    unsigned int total_lines;
+    unsigned int line_c;
 };
 typedef struct lessfile_s lessfile_t;
+
 char *read_file(char *filepath);
+char *get_next_line(char *str, char **endptr);
+int split_lines(char *str, lessfile_t *lf);
 lessfile_t *load_file(char *filepath);
 void unload_file(lessfile_t *lf);
 
-// end of files.c
+#endif // ML_FILES_H
 
-// interface.c
+#ifndef ML_INTERFACE_H
+#define ML_INTERFACE_H 1
+
+#define KEY_PGUP    339
+#define KEY_PGDOWN  338
+
+#define eol(c) ((c) == '\n' || (c) == '\0')
+#define lpool(l, m) (l) <= (m) ? (l) : (m)
 
 void init_screen(void);
 void display_lines(lessfile_t *lf);
+int go_up(lessfile_t *lf, unsigned int offset);
+int go_down(lessfile_t *lf, unsigned int offset);
 int handle_input(lessfile_t *lf, int *ch,
-    unsigned int *height, unsigned int *width);
+    unsigned int *prev_height, unsigned int *prev_width);
 void display_file(lessfile_t *lf);
 
-// end of interface.c
+#endif // ML_INTERFACE_H
 
-// main.c
+#ifndef ML_MAIN_H
+#define ML_MAIN_H 1
 
 void display_usage(void);
 void display_version(void);
 void display_help(void);
 
-// end of main.c
-
-#endif
+#endif // ML_MAIN_H
