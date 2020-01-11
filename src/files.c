@@ -24,6 +24,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <string.h>
 
 char *read_file(char *filepath)
 {
@@ -32,19 +33,19 @@ char *read_file(char *filepath)
     char *file_content = NULL;
 
     if (lstat(filepath, &_fileinfo) == -1) {
-        perror("my_less: read_file()");
+        fprintf(stderr, "%s: %s\n", filepath, strerror(errno));
         return (NULL);
     }
 
     _file = fopen(filepath, "r");
     if (_file == NULL) {
-        perror("my_less: read_file()");
+        fprintf(stderr, "%s: %s\n", filepath, strerror(errno));
         return (NULL);
     }
 
     file_content = malloc(sizeof(char) * (_fileinfo.st_size + 1));
     if (file_content == NULL) {
-        fprintf(stderr, "my_less: read_file(): Cannot allocate memory.\n");
+        fprintf(stderr, "%s: Cannot allocate memory (read_file)\n", filepath);
         fclose(_file);
         return (NULL);
     }
@@ -71,7 +72,7 @@ lessfile_t *load_file(char *filepath)
 
     lessfile_t *lf = malloc(sizeof(lessfile_t));
     if (lf == NULL) {
-        fprintf(stderr, "my_less: load_file(): Cannot allocate memory.\n");
+        fprintf(stderr, "%s: Cannot allocate memory (load_file)\n", filepath);
         free(content);
         return (NULL);
     }
