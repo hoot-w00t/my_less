@@ -25,15 +25,17 @@
 
 void display_usage(void)
 {
-    printf("Usage: ./my_less <file> [--help]\n");
+    printf("Usage: ./my_less <file> [<file2> <file3> ...]\n\
+                                [-h] [-v]\n");
 }
 
 void display_help(void)
 {
     display_usage();
     printf("\nDescription:\n\
-    file        file to open\n\
-    --help      show this help\n");
+    file            file(s) to open\n\
+    -h, --help      show this help\n\
+    -v, --version   display the git version\n");
 }
 
 int main(int ac, char **av)
@@ -41,10 +43,10 @@ int main(int ac, char **av)
     lessfile_t *lf = NULL;
 
     for (int i = 1; i < ac; ++i) {
-        if (!strcmp(av[i], "--help")) {
+        if (!strcmp(av[i], "-h") || !strcmp(av[i], "--help")) {
             display_help();
             return (0);
-        } else if (!strcmp(av[i], "--version")) {
+        } else if (!strcmp(av[i], "-v") || !strcmp(av[i], "--version")) {
             display_version();
             return (0);
         } else {
