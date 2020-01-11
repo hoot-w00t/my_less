@@ -83,9 +83,9 @@ int handle_input(lessfile_t *lf, int *ch,
     getmaxyx(stdscr, height, width);
     switch (*ch) {
         case KEY_DOWN: return go_down(lf, 1);
-        case KEY_PGDOWN: return go_down(lf, height);
+        case KEY_PGDOWN: return go_down(lf, height - 1);
         case KEY_UP: return go_up(lf, 1);
-        case KEY_PGUP: return go_up(lf, height);
+        case KEY_PGUP: return go_up(lf, height - 1);
         case KEY_RIGHT: return go_right(lf, width / 2);
         case KEY_LEFT: return go_left(lf, width / 2);
         case 'q': return (-1);
