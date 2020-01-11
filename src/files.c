@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
 #include <string.h>
@@ -32,13 +31,18 @@ char *read_file(char *filepath)
     FILE *_file = NULL;
     char *file_content = NULL;
 
-    _file = fopen(filepath, "r");
-    if (_file == NULL) {
+    if (lstat(filepath, &_fileinfo) == -1) {
         fprintf(stderr, "%s: %s\n", filepath, strerror(errno));
         return (NULL);
     }
 
-    if (lstat(filepath, &_fileinfo) == -1) {
+    if (S_ISDIR(_fileinfo.st_mode)) {
+        fprintf(stderr, "%s: Is a directory\n", filepath);
+        return (NULL);
+    }
+
+    _file = fopen(filepath, "r");
+    if (_file == NULL) {
         fprintf(stderr, "%s: %s\n", filepath, strerror(errno));
         return (NULL);
     }
