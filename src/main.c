@@ -40,6 +40,7 @@ void display_help(void)
 
 int main(int ac, char **av)
 {
+    unsigned int files = 0;
     lessfile_t *lf = NULL;
 
     for (int i = 1; i < ac; ++i) {
@@ -50,6 +51,7 @@ int main(int ac, char **av)
             display_version();
             return (0);
         } else {
+            files += 1;
             lf = load_file(av[i]);
             if (lf != NULL) {
                 display_file(lf);
@@ -57,7 +59,7 @@ int main(int ac, char **av)
             }
         }
     }
-    if (lf == NULL) {
+    if (files == 0) {
         display_usage();
         return (1);
     }

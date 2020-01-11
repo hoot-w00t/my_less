@@ -16,7 +16,7 @@
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-GIT_VERSION	=	$(shell git describe --always --tags)
+GIT_VERSION	=	$(shell git describe --always --tags --abbrev=10 --dirty)
 
 CC	=	cc
 LIBS	=	-lncurses
