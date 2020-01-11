@@ -62,6 +62,18 @@ int handle_input(lessfile_t *lf, int *ch,
     } else if (*ch == KEY_UP && lf->line > 0) {
         lf->line -= 1;
         return (1);
+    } else if (*ch == KEY_PGUP) {
+        if (lf->line >= oheight)
+            lf->line -= oheight;
+        else
+            lf->line = 0;
+        return (1);
+    } else if (*ch == KEY_PGDOWN) {
+        if (lf->line + oheight < lf->total_lines)
+            lf->line += oheight;
+        else
+            lf->line = lf->total_lines - 1;
+        return (1);
     }
     if (oheight != *height || owidth != *width) {
         *height = oheight;

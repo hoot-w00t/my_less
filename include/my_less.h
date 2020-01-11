@@ -21,6 +21,8 @@
 #define MY_LESS_H
 
 #define BUFFER_SIZE 32
+#define KEY_PGUP    339
+#define KEY_PGDOWN  338
 #define eol(c) ((c) == '\n' || (c) == '\0')
 
 // files.c
