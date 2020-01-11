@@ -23,7 +23,7 @@ LIBS	=	-lncurses
 INCLUDE	=	-I./include
 CFLAGS	=	-Wall -Wextra -pipe	\
 			$(INCLUDE) $(LIBS)	\
-			-DGIT_VERSION=\"$(GIT_VERSION)\"
+			-DGIT_VERSION=\"git-$(GIT_VERSION)\"
 
 SRC	=	src/main.c		\
 		src/version.c	\
@@ -40,4 +40,7 @@ my_less:	$(OBJS)
 clean:
 	@rm -f $(OBJS)
 
-re:	clean	all
+fclean:	clean
+	@rm -f my_less
+
+re:	fclean	all
