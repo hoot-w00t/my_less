@@ -28,7 +28,8 @@ CFLAGS	=	-Wall -Wextra -pipe	\
 SRC	=	src/main.c		\
 		src/version.c	\
 		src/files.c		\
-		src/interface.c
+		src/interface.c	\
+		src/input.c
 
 OBJS	=	$(SRC:.c=.o)
 

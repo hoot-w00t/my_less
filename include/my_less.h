@@ -29,6 +29,8 @@ struct lessfile_s {
     char *filepath;
     unsigned int line;
     unsigned int line_c;
+    unsigned int column;
+    unsigned int column_max;
 };
 typedef struct lessfile_s lessfile_t;
 
@@ -39,6 +41,19 @@ lessfile_t *load_file(char *filepath);
 void unload_file(lessfile_t *lf);
 
 #endif // ML_FILES_H
+
+
+#ifndef ML_INPUT_H
+#define ML_INPUT_H 1
+
+int go_up(lessfile_t *lf, unsigned int offset);
+int go_down(lessfile_t *lf, unsigned int offset);
+int go_right(lessfile_t *lf, unsigned int offset);
+int go_left(lessfile_t *lf, unsigned int offset);
+int handle_input(lessfile_t *lf, int *ch,
+    unsigned int *prev_height, unsigned int *prev_width);
+
+#endif // ML_INPUT_H
 
 #ifndef ML_INTERFACE_H
 #define ML_INTERFACE_H 1
@@ -51,10 +66,6 @@ void unload_file(lessfile_t *lf);
 
 void init_screen(void);
 void display_lines(lessfile_t *lf);
-int go_up(lessfile_t *lf, unsigned int offset);
-int go_down(lessfile_t *lf, unsigned int offset);
-int handle_input(lessfile_t *lf, int *ch,
-    unsigned int *prev_height, unsigned int *prev_width);
 void display_file(lessfile_t *lf);
 
 #endif // ML_INTERFACE_H

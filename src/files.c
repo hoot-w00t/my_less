@@ -86,6 +86,7 @@ char *get_next_line(char *str, char **endptr)
 int split_lines(char *str, lessfile_t *lf)
 {
     unsigned int lines = 1;
+    unsigned int line_len = 0;
 
     for (unsigned int i = 0; str[i] != '\0'; ++i)
         if (str[i] == '\n')
@@ -99,6 +100,10 @@ int split_lines(char *str, lessfile_t *lf)
     char *endptr = str;
     for (unsigned int i = 0; i < lines; ++i) {
         splitted[i] = get_next_line(endptr, &endptr);
+        line_len = strlen(splitted[i]);
+
+        if (line_len > lf->column_max)
+            lf->column_max = line_len;
         if (splitted[i] == NULL)
             lines = i + 1;
     }
@@ -120,10 +125,12 @@ lessfile_t *load_file(char *filepath)
         return (NULL);
     }
 
-    split_lines(content, lf);
-    free(content);
     lf->filepath = filepath;
     lf->line = 0;
+    lf->column = 0;
+    lf->column_max = 0;
+    split_lines(content, lf);
+    free(content);
 
     return (lf);
 }
