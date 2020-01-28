@@ -19,8 +19,9 @@
 
 #include "my_less.h"
 #include <ncurses.h>
+#include <stddef.h>
 
-int go_up(lessfile_t *lf, unsigned int offset)
+int go_up(lessfile_t *lf, size_t offset)
 {
     if (lf->line == 0) {
         beep();
@@ -34,7 +35,7 @@ int go_up(lessfile_t *lf, unsigned int offset)
     return (1);
 }
 
-int go_down(lessfile_t *lf, unsigned int offset)
+int go_down(lessfile_t *lf, size_t offset)
 {
     unsigned int scr_lines = getmaxy(stdscr) - 1;
 
@@ -50,7 +51,7 @@ int go_down(lessfile_t *lf, unsigned int offset)
     return (1);
 }
 
-int go_right(lessfile_t *lf, unsigned int offset)
+int go_right(lessfile_t *lf, size_t offset)
 {
     if (lf->column + offset >= lf->column_max) {
         beep();
@@ -60,7 +61,7 @@ int go_right(lessfile_t *lf, unsigned int offset)
     return (1);
 }
 
-int go_left(lessfile_t *lf, unsigned int offset)
+int go_left(lessfile_t *lf, size_t offset)
 {
     if (lf->column == 0) {
         beep();
@@ -77,8 +78,7 @@ int go_left(lessfile_t *lf, unsigned int offset)
 int handle_input(lessfile_t *lf, int *ch,
     unsigned int *prev_height, unsigned int *prev_width)
 {
-    unsigned int height = 0;
-    unsigned int width = 0;
+    unsigned int height = 0, width = 0;
 
     getmaxyx(stdscr, height, width);
     switch (*ch) {

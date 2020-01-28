@@ -36,13 +36,14 @@ void init_screen(void)
 
 void display_lines(lessfile_t *lf)
 {
-    unsigned int height = 0, width = 0, cur_line = lf->line;
+    unsigned int height = 0, width = 0;
+    size_t cur_line = lf->line;
 
     getmaxyx(stdscr, height, width);
     erase();
-    for (unsigned int y = 0; y < height - 1; ++y, cur_line = lf->line + y) {
+    for (size_t y = 0; y < height - 1; ++y, cur_line = lf->line + y) {
         if (cur_line < lf->line_c) {
-            unsigned int line_len = strlen(lf->content[cur_line]);
+            size_t line_len = strlen(lf->content[cur_line]);
             if (lf->column >= line_len)
                 continue;
             if (line_len < width) {
@@ -60,10 +61,10 @@ void display_lines(lessfile_t *lf)
         attron(COLOR_PAIR(1));
 
     mvprintw(height - 1, 0, "%s, %u-%u (%u lines) (Press q to exit)",
-                lf->filename,
-                lf->line + 1,
-                lpool(lf->line + (height - 1), lf->line_c),
-                lf->line_c);
+                            lf->filename,
+                            lf->line + 1,
+                            lpool(lf->line + (height - 1), lf->line_c),
+                            lf->line_c);
     if (has_colors())
         attroff(COLOR_PAIR(1));
 
@@ -72,9 +73,8 @@ void display_lines(lessfile_t *lf)
 
 void display_file(lessfile_t *lf)
 {
-    int ch = 0;
-    unsigned int height, width;
-    int r = 0;
+    int ch = 0, r = 0;
+    unsigned int height = 0, width = 0;
 
     init_screen();
     getmaxyx(stdscr, height, width);

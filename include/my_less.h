@@ -24,14 +24,16 @@
 #ifndef ML_FILES_H
 #define ML_FILES_H 1
 
+#include <stddef.h>
+
 struct lessfile_s {
     char **content;
     char *filepath;
     char *filename;
-    unsigned int line;
-    unsigned int line_c;
-    unsigned int column;
-    unsigned int column_max;
+    size_t line;
+    size_t line_c;
+    size_t column;
+    size_t column_max;
 };
 typedef struct lessfile_s lessfile_t;
 
@@ -47,10 +49,10 @@ void unload_file(lessfile_t *lf);
 #ifndef ML_INPUT_H
 #define ML_INPUT_H 1
 
-int go_up(lessfile_t *lf, unsigned int offset);
-int go_down(lessfile_t *lf, unsigned int offset);
-int go_right(lessfile_t *lf, unsigned int offset);
-int go_left(lessfile_t *lf, unsigned int offset);
+int go_up(lessfile_t *lf, size_t offset);
+int go_down(lessfile_t *lf, size_t offset);
+int go_right(lessfile_t *lf, size_t offset);
+int go_left(lessfile_t *lf, size_t offset);
 int handle_input(lessfile_t *lf, int *ch,
     unsigned int *prev_height, unsigned int *prev_width);
 

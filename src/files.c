@@ -55,7 +55,7 @@ char *read_file(char *filepath)
         return (NULL);
     }
 
-    unsigned int read_bytes = 0;
+    long read_bytes = 0;
     while (read_bytes != _fileinfo.st_size) {
         read_bytes += fread(&file_content[read_bytes],
                             sizeof(char),
@@ -71,7 +71,7 @@ char *read_file(char *filepath)
 
 char *get_next_line(char *str, char **endptr)
 {
-    unsigned int size = 0;
+    size_t size = 0;
     for (; !eol(str[size]); ++size);
 
     char *line = malloc(sizeof(char) * (size + 1));
@@ -90,10 +90,10 @@ char *get_next_line(char *str, char **endptr)
 
 int split_lines(char *str, lessfile_t *lf)
 {
-    unsigned int lines = 1;
-    unsigned int line_len = 0;
+    size_t lines = 1;
+    size_t line_len = 0;
 
-    for (unsigned int i = 0; str[i] != '\0'; ++i)
+    for (size_t i = 0; str[i] != '\0'; ++i)
         if (str[i] == '\n')
             ++lines;
     lf->line_c = lines;
@@ -103,7 +103,7 @@ int split_lines(char *str, lessfile_t *lf)
         return (0);
 
     char *endptr = str;
-    for (unsigned int i = 0; i < lines; ++i) {
+    for (size_t i = 0; i < lines; ++i) {
         splitted[i] = get_next_line(endptr, &endptr);
         line_len = strlen(splitted[i]);
 
@@ -147,6 +147,7 @@ lessfile_t *load_file(char *filepath)
     lf->line = 0;
     lf->column = 0;
     lf->column_max = 0;
+
     split_lines(content, lf);
     free(content);
     free(_path);
@@ -156,7 +157,7 @@ lessfile_t *load_file(char *filepath)
 
 void unload_file(lessfile_t *lf)
 {
-    for (unsigned int i = 0; i < lf->line_c; ++i)
+    for (size_t i = 0; i < lf->line_c; ++i)
         free(lf->content[i]);
     free(lf->filename);
     free(lf->content);
