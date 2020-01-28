@@ -44,4 +44,10 @@ clean:
 fclean:	clean
 	@rm -f my_less
 
+install:
+	cp my_less /usr/local/bin/my_less
+
+uninstall:
+	rm -f /usr/local/bin/my_less
+
 re:	fclean	all
