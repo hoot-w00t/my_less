@@ -60,11 +60,13 @@ void display_lines(lessfile_t *lf)
     if (has_colors())
         attron(COLOR_PAIR(1));
 
-    mvprintw(height - 1, 0, "%s, %u-%u (%u lines) (Press q to exit)",
-                            lf->filename,
-                            lf->line + 1,
-                            lpool(lf->line + (height - 1), lf->line_c),
-                            lf->line_c);
+    mvprintw(height - 1, 0, "%s, %lu-%lu, %u% (%lu lines) (Press q to exit)",
+                lf->filename,
+                lf->line + 1,
+                lpool(lf->line + (height - 1), lf->line_c),
+                lpool(lf->line + (height - 1), lf->line_c) * 100 / lf->line_c,
+                lf->line_c);
+
     if (has_colors())
         attroff(COLOR_PAIR(1));
 

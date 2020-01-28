@@ -65,7 +65,7 @@ int handle_input(lessfile_t *lf, int *ch,
 #define KEY_PGDOWN  338
 
 #define eol(c) ((c) == '\n' || (c) == '\0')
-#define lpool(l, m) (l) <= (m) ? (l) : (m)
+#define lpool(l, m) ((l) <= (m) ? (l) : (m))
 
 void init_screen(void);
 void display_lines(lessfile_t *lf);
