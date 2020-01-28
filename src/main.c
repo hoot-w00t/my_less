@@ -26,7 +26,8 @@
 void display_usage(void)
 {
     printf("Usage: ./my_less <file> [<file2> <file3> ...]\n\
-                                [-h] [-v]\n");
+                        [-h, --help]\n\
+                        [-v, --version]\n");
 }
 
 void display_help(void)
